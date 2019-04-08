@@ -1,0 +1,13 @@
+<div class="form-wrapper">
+    <form class="petition-form" method="post">
+        <input id="firstName" type="text" name="firstname" value="">
+        <label for="firstName">First Name</label>
+        <input id="lastName" type="text" name="lastname" value="">
+        <label for="lastName">last Name</label>
+        <input id="signature" type="hidden" name="signature" value="">
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        <canvas id="canvas" width="280" height="50"></canvas>
+        <button type="submit" name="button">Submit</button>
+        {{> error }}
+    </form>
+</div>

@@ -1,0 +1,85 @@
+body {
+    font-family: "Exo 2", sans-serif;
+    text-align: center;
+    color: midnightblue;
+    font-size: 20px;
+    line-height: 35px;
+    font-weight: 400;
+    margin: 0;
+    padding: 40px;
+
+    background-color: white;
+    background-image: radial-gradient(midnightblue 9px, transparent 10px),
+        repeating-radial-gradient(
+            midnightblue 0,
+            midnightblue 4px,
+            transparent 5px,
+            transparent 20px,
+            midnightblue 21px,
+            midnightblue 25px,
+            transparent 26px,
+            transparent 50px
+        );
+    background-size: 30px 30px, 90px 90px;
+    background-position: 0 0;
+}
+
+.body-wrapper {
+    background-color: #fff;
+    opacity: 0.97;
+    padding: 40px;
+    margin: 0 auto;
+    border: 1px solid midnightblue;
+}
+
+h1 {
+    margin-bottom: 40px;
+    border: 1px solid midnightblue;
+    background-color: #fff;
+    padding: 20px;
+}
+
+img {
+    border: 1px solid midnightblue;
+    width: 200px;
+    height: 200px;
+    display: inline-block;
+    margin-bottom: 40px;
+}
+
+.form-wrapper {
+    width: 300px;
+    background-color: midnightblue;
+    color: #fff;
+    border-radius: 5px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+canvas {
+    background-color: pink;
+    border: 1px dashed #fff;
+    margin-bottom: 20px;
+}
+
+.petition-form input,
+.petition-form button {
+    display: block;
+    width: 280px;
+    margin: 0 auto;
+    min-height: 40px;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+footer {
+    margin-top: 40px;
+    border: 1px solid midnightblue;
+    background-color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+form {
+}
