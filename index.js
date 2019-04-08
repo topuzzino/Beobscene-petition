@@ -36,6 +36,38 @@ app.use(function(req, res, next) {
     next();
 });
 
+function hashPassword(plainTextPassword) {
+    return new Promise(function(resolve, reject) {
+        bcrypt.genSalt(function(err, salt) {
+            if (err) {
+                return reject(err);
+            }
+            bcrypt.hash(plainTextPassword, salt, function(err, hash) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(hash);
+            });
+        });
+    });
+}
+
+function checkPassword(textEnteredInLoginForm, hashedPasswordFromDatabase) {
+    return new Promise(function(resolve, reject) {
+        bcrypt.compare(
+            textEnteredInLoginForm,
+            hashedPasswordFromDatabase,
+            function(err, doesMatch) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(doesMatch);
+                }
+            }
+        );
+    });
+}
+
 // ---------------- MAIN PAGE ----------------
 app.get("/petition", (req, res) => {
     res.render("petition", {
@@ -46,14 +78,26 @@ app.get("/petition", (req, res) => {
     //req.send(`<h1>Bla ${req.session.sigId}</h1>`)
 });
 
+// ---------------- REGISTER PAGE ----------------
+app.get("/register", (req, res) => {
+    res.render("register", {
+        layout: "main"
+    });
+});
+
+// ---------------- LOGIN PAGE ----------------
+app.get("/login", (req, res) => {
+    res.render("login", {
+        layout: "main"
+    });
+});
+
 // ---------------- THANKS PAGE ----------------
 app.get("/thanks", (req, res) => {
     let userId = req.session.id;
     let firstname = req.session.firstname;
-    console.log(req.session);
 
     db.getSignature(userId).then(data => {
-        console.log("data: ", data);
         dataObj = {
             firstname,
             signature: data.rows[0].signature
@@ -83,6 +127,8 @@ app.get("/signers", (req, res) => {
         });
 });
 
+// ---------------- PETITION FORM REQUEST ----------------
+
 // any changes to a db (UPDATE, INSERT or DELETE)
 // should be done in a POST route
 app.post("/petition", (req, res) => {
@@ -102,6 +148,56 @@ app.post("/petition", (req, res) => {
         });
 
     // how do we query a database from an express server?
+});
+
+// ---------------- REGISTER FORM REQUEST ----------------
+app.post("/register", (req, res) => {
+    hashPassword(req.body.password).then(hash => {
+        db.addUsers(req.body.firstname, req.body.lastname, req.body.email, hash)
+            .then(id => {
+                req.session.userId = id.rows[0].id;
+                res.redirect("/petition");
+            })
+            .catch(err => {
+                res.render("register", {
+                    layout: "main",
+                    error: "Error by registration",
+                    firstname: req.body.firstname,
+                    lastname: req.body.lastname,
+                    email: req.body.email
+                });
+                console.log("Error in db.addUsers: ", err);
+            });
+    });
+});
+
+// ---------------- LOGIN FORM REQUEST ----------------
+app.post("/login", (req, res) => {
+    db.getUsers(req.body.email).then(data => {
+        if (data.length == 1) {
+            checkPassword(req.body.password, data.rows[0].password)
+                .then(() => {
+                    req.session.firstname = data.rows[0].firstname;
+                    req.session.lastname = data.rows[0].lastname;
+                    req.session.email = data.rows[0].email;
+                    req.session.userId = data.rows[0].id;
+                    res.redirect("/petition");
+                })
+                .catch(() => {
+                    res.render("login", {
+                        layout: "main",
+                        error: "Your email or password is wrong. Try again",
+                        email: req.body.email
+                    });
+                });
+        } else {
+            res.render("login", {
+                layout: "main",
+                error: "Your email or password is wrong. Try again",
+                email: req.body.email
+            });
+        }
+    });
 });
 
 app.listen(8080, () => console.log("PETITION ..."));

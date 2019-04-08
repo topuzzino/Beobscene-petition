@@ -86,13 +86,15 @@ img {
     padding: 30px;
 }
 
-.names-wrapper {
+.names-wrapper,
+.email-password-wrapper {
     display: flex;
     justify-content: space-between;
     margin-bottom: 40px;
 }
 
-.names-wrapper input {
+.names-wrapper input,
+.email-password-wrapper input {
     width: 250px;
     height: 50px;
     margin: 0;
@@ -125,7 +127,7 @@ img {
     border: 3px solid #00ff00;
 }
 
-.petition-form button {
+button {
     width: 250px;
     height: 50px;
     background-color: #00ff00;
@@ -138,7 +140,7 @@ img {
     text-transform: uppercase;
 }
 
-.petition-form button::before {
+button::before {
     position: absolute;
     content: "";
     top: calc(50% - 10px);
@@ -150,19 +152,19 @@ img {
     transition-property: transform;
 }
 
-.petition-form button:hover {
+button:hover {
     transform: translateX(10px);
 }
 
-.petition-form button:active {
+button:active {
     background-color: #fff;
 }
 
-.petition-form button:hover::before {
+button:hover::before {
     transform: translateX(-10px);
 }
 
-.petition-form button:active::before {
+button:active::before {
     border-color: transparent #fff transparent transparent;
 }
 

@@ -14,8 +14,7 @@ exports.getSigners = function getSigners() {
 };
 
 exports.addSignature = function addSignature(signature, userId) {
-    let q =
-        "INSERT INTO signatures (signature, userId) VALUES ($1, $2) RETURNING id";
+    let q = `INSERT INTO signatures (signature, userId) VALUES ($1, $2) RETURNING id`;
     let params = [signature, userId];
     return db.query(q, params);
 };
@@ -23,4 +22,15 @@ exports.addSignature = function addSignature(signature, userId) {
 exports.getSignature = function getSignature(userId) {
     let q = "SELECT * FROM signatures WHERE id = $1";
     return db.query(q, [userId]);
+};
+
+exports.addUsers = function addUsers(firstname, lastname, email, password) {
+    let q = `INSERT INTO users (firstname, lastname, email, password) VALUES ($1, $2, $3, $4) RETURNING *`;
+    let params = [firstname, lastname, email, password];
+    return db.query(q, params);
+};
+
+exports.getUsers = function getUsers(email) {
+    let q = "SELECT * FROM users WHERE email = $1";
+    return db.query(q, [email]);
 };
