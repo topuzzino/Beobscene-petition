@@ -1,14 +1,29 @@
+/* #00ff00 */
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: "Exo 2", sans-serif;
+    /*font-family: "Exo 2", sans-serif;*/
+    font-family: "Titillium Web", sans-serif;
     text-align: center;
-    color: midnightblue;
+    color: #000;
     font-size: 20px;
     line-height: 35px;
     font-weight: 400;
     margin: 0;
     padding: 40px;
 
-    background-color: white;
+    background: #ece9e6; /* fallback for old browsers */
+    background: -webkit-linear-gradient(left, #ffffff, #ece9e6);
+    background: -o-linear-gradient(left, #ffffff, #ece9e6);
+    background: linear-gradient(
+        to right,
+        #ffffff,
+        #ece9e6
+    ); /* Chrome 10-25, Safari 5.1-6 */ /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    /*
     background-image: radial-gradient(midnightblue 9px, transparent 10px),
         repeating-radial-gradient(
             midnightblue 0,
@@ -22,64 +37,160 @@ body {
         );
     background-size: 30px 30px, 90px 90px;
     background-position: 0 0;
+    */
 }
 
 .body-wrapper {
-    background-color: #fff;
-    opacity: 0.97;
     padding: 40px;
     margin: 0 auto;
-    border: 1px solid midnightblue;
+    width: 700px;
 }
 
 h1 {
     margin-bottom: 40px;
-    border: 1px solid midnightblue;
-    background-color: #fff;
-    padding: 20px;
+    /*border: 1px solid midnightblue;*/
+    font-size: 50px;
+    color: #000;
+    font-weight: 900;
+    text-decoration: line-through;
+    text-transform: uppercase;
+    text-decoration-color: #00ff00;
+    text-decoration-line: underline;
+
+    margin: 0 auto;
+    margin-bottom: 40px;
+}
+
+h2 {
+    font-size: 36px;
+    font-weight: 400;
 }
 
 img {
-    border: 1px solid midnightblue;
     width: 200px;
     height: 200px;
     display: inline-block;
     margin-bottom: 40px;
 }
 
+.petition-text {
+    border-bottom: 6px solid #00ff00;
+    margin-bottom: 40px;
+}
+
 .form-wrapper {
-    width: 300px;
-    background-color: midnightblue;
+    background-color: #000;
+    background: url("img/bg_form.png") repeat;
     color: #fff;
-    border-radius: 5px;
     margin: 0 auto;
-    padding: 10px;
+    padding: 30px;
 }
 
-canvas {
-    background-color: pink;
-    border: 1px dashed #fff;
-    margin-bottom: 20px;
+.names-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
 }
 
-.petition-form input,
-.petition-form button {
-    display: block;
-    width: 280px;
-    margin: 0 auto;
-    min-height: 40px;
+.names-wrapper input {
+    width: 250px;
+    height: 50px;
+    margin: 0;
+    padding-left: 10px;
+    background: linear-gradient(to right, #ffffff, #ece9e6);
     border: none;
-    border-radius: 5px;
-    margin-bottom: 20px;
+}
+
+.label-wrapper {
+    display: flex;
+}
+
+.names-wrapper label {
+    font-size: 14px;
+    font-weight: 200;
+}
+
+#canvas {
+    background-color: #fff;
+    margin-bottom: 40px;
+    width: 100%;
+    background: linear-gradient(to right, #ffffff, #ece9e6);
+}
+
+.signature-image {
+    width: 560px;
+    height: 100px;
+    background-color: #fff;
+    background: linear-gradient(to right, #ffffff, #ece9e6);
+    border: 3px solid #00ff00;
+}
+
+.petition-form button {
+    width: 250px;
+    height: 50px;
+    background-color: #00ff00;
+    border: none;
+    transition-duration: 0.3s;
+    transition-property: transform;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: "Titillium Web", sans-serif;
+    text-transform: uppercase;
+}
+
+.petition-form button::before {
+    position: absolute;
+    content: "";
+    top: calc(50% - 10px);
+    left: 0;
+    border-style: solid;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent #00ff00 transparent transparent;
+    transition-duration: 0.3s;
+    transition-property: transform;
+}
+
+.petition-form button:hover {
+    transform: translateX(10px);
+}
+
+.petition-form button:active {
+    background-color: #fff;
+}
+
+.petition-form button:hover::before {
+    transform: translateX(-10px);
+}
+
+.petition-form button:active::before {
+    border-color: transparent #fff transparent transparent;
 }
 
 footer {
-    margin-top: 40px;
-    border: 1px solid midnightblue;
-    background-color: #fff;
-    padding: 20px;
+    margin-top: 80px;
+    text-align: center;
+    border-top: 10px solid #00ff00;
+}
+
+/* ------------------ STYLES for THANKS ------------------ */
+.link-wrapper {
     text-align: center;
 }
 
-form {
+.signer-link {
+    font-weight: 700;
+    font-size: 24px;
+    color: #000;
+    text-decoration-line: underline;
+    text-decoration-color: #00ff00;
+}
+
+/* ------------------ STYLES for SIGNERS ------------------ */
+
+.signers-list {
+    list-style-type: square;
+    text-align: left;
+}
+
+.signers-list-item {
 }

@@ -10,6 +10,7 @@ app.engine("handlebars", hb());
 app.set("view engine", "handlebars");
 // I hate handlebars --- END
 
+// ---------------- UTILITIES ----------------
 // if there is a request for css, go to the public folder
 app.use(express.static(__dirname + "/public"));
 
@@ -41,7 +42,7 @@ app.get("/petition", (req, res) => {
         layout: "main"
     });
 
-    //req.session.sigId = results.rows[0]
+    //req.session.userId = results.rows[0]
     //req.send(`<h1>Bla ${req.session.sigId}</h1>`)
 });
 
