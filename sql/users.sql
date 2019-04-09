@@ -1,4 +1,3 @@
--- id column (will be stored in a cookie)
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (

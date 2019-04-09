@@ -1,5 +1,6 @@
+<h2>Now please tell us just a little bit more about yourself</h2>
 <div class="form-wrapper">
-    <form class="register-form"  method="post">
+    <form class="profile-form" action="/profile" method="post">
         <div class="names-wrapper">
             <input id="firstName" type="text" name="firstname" placeholder="First Name" value="">
             <input id="lastName" type="text" name="lastname" placeholder="Last Name" value="">
@@ -9,8 +10,14 @@
             <input type="password" name="password" placeholder="password" value="">
         </div>
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
-        <button type="submit" name="button">Sign up!</button>
-        {{> error }}
+        <div class="profileInfo-wrapper">
+            <input type="text" name="age" placeholder="Age" value="">
+            <input type="text" name="City" placeholder="City" value="">
+        </div>
+        <div class="profileInfo-wrapper">
+            <input type="text" name="Homepage" placeholder="Homepage" value="">
+            <input type="text" name="obscene" placeholder="Your favorite obscene expression" value="">
+        </div>
+
     </form>
-    <p>If you already with us please <a href="/login">log in</a></p>
 </div>
