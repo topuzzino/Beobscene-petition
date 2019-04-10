@@ -41,9 +41,10 @@ exports.getProfileInfo = function getProfileInfo(userId) {
 //};
 
 // ON THANKS PAGE - show the list of signed users
-exports.getSigners = function getSigner(userId) {
-    let q = "SELECT * FROM signatures WHERE userId = $1";
-    return db.query(q, [userId]);
+exports.getSigners = function getSigner() {
+    let q =
+        "SELECT users.first, users.last, signatures.userId FROM users JOIN signatures ON signatures.userId = users.id";
+    return db.query(q);
 };
 
 // ADD SIGNATURE ON PETITION PAGE

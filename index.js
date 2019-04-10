@@ -101,14 +101,10 @@ app.get("/login", (req, res) => {
 
 // ---------------- THANKS PAGE ----------------
 app.get("/thanks", (req, res) => {
-    let userId = req.session.id;
-    let firstname = req.session.firstname;
-    let lastname = req.session.lastname;
-
-    db.getSignature(userId).then(data => {
+    db.getSignature(req.session.id).then(data => {
         dataObj = {
-            firstname,
-            lastname,
+            firstname: req.session.firstname,
+            lastname: req.session.firstname,
             signature: data.rows[0].signature
         };
         res.render("thanks", {
@@ -141,20 +137,25 @@ app.get("/signers/:city", (req, res) => {
 // ---------------- PETITION FORM REQUEST ----------------
 
 app.post("/petition", (req, res) => {
-    db.addSignature(req.body.signature, req.session.userId)
-        .then(results => {
-            console.log("results: ", results);
-            // cookie
-            req.session.id = results.rows[0].id;
-            res.redirect("/thanks");
-        })
-        .catch(err => {
-            res.render("petition", {
-                error: "Something went wrong. Please try again",
-                layout: "main"
+    if (req.body.signature != "") {
+        // no, the consition should be "if signature / signature.userId doesn't exists, ..."
+        db.addSignature(req.body.signature, req.session.userId)
+            .then(results => {
+                console.log("results: ", results);
+                // cookie
+                req.session.id = results.rows[0].id;
+                req.session.firstname = results.rows[0].first;
+                req.session.lastname = results.rows[0].last;
+                res.redirect("/thanks");
+            })
+            .catch(err => {
+                res.render("petition", {
+                    error: "Something went wrong. Please try again",
+                    layout: "main"
+                });
+                console.log("err in addSignature (post request): ", err);
             });
-            console.log("err in addSignature (post request): ", err);
-        });
+    }
 });
 
 // ---------------- REGISTER FORM REQUEST ----------------
@@ -212,8 +213,11 @@ app.post("/login", (req, res) => {
         if (data.length != 0) {
             checkPassword(req.body.password, data.rows[0].password)
                 .then(() => {
+                    console.log("data: ", data);
                     req.session.userId = data.rows[0].id;
                     req.session.email = data.rows[0].email;
+                    //req.session.firstname = data.rows[0].first;
+                    //req.session.lastname = data.rows[0].last;
                     res.redirect("/petition");
                 })
                 .catch(() => {
@@ -232,4 +236,10 @@ app.post("/login", (req, res) => {
     });
 });
 
-app.listen(8080, () => console.log("PETITION ..."));
+app.listen(8080, () => console.log("PETITION"));
+
+/* Port for Heroku
+app.listen(process.env.PORT || 8080, function() {
+    console.log("I'm listening");
+}
+*/
