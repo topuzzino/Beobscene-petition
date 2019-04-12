@@ -1,0 +1,10 @@
+<div class="form-wrapper">
+    <form class="petition-form" method="post">
+        <p>So dear {{first}} {{last}}, let us know you're serious: <br/>give us your signature</p>
+        <input id="signature" type="hidden" name="signature" value="">
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        <canvas id="canvas" width="560" height="100">{{signature}}</canvas>
+        <button type="submit" name="button">Express yourself!</button>
+        {{> error }}
+    </form>
+</div>

@@ -37,7 +37,14 @@ app.use(function(req, res, next) {
     res.locals.csrfToken = req.csrfToken(); // whar are .locals?
     next();
 });
-
+/*
+app.use(function(req, res, next) {
+    if (!req.session.userId && req.url != "/register" && req.url != "/login") {
+        return res.redirect("/register");
+    }
+    next();
+});
+*/
 function hashPassword(plainTextPassword) {
     return new Promise(function(resolve, reject) {
         bcrypt.genSalt(function(err, salt) {
@@ -72,22 +79,32 @@ function checkPassword(textEnteredInLoginForm, hashedPasswordFromDatabase) {
 
 // ---------------- MAIN PAGE ----------------
 app.get("/petition", (req, res) => {
-    res.render("petition", {
-        layout: "main"
+    //console.log("req.session: ", req.session);
+    res.render("signatureform", {
+        layout: "main",
+        first: req.session.firstname,
+        last: req.session.lastname
     });
-
-    //req.session.userId = results.rows[0]
-    //req.send(`<h1>Bla ${req.session.signatureId}</h1>`)
 });
 
 app.get("/", (req, res) => {
-    console.log("req.session: ", req.session);
     res.redirect("/petition"); // need to change that - should redirect either to login or to register page
 });
 
 // ---------------- REGISTER PAGE ----------------
 app.get("/register", (req, res) => {
+    /* if the user has already registered (if signed - sigId), he can go only to ...
+    if (req.session.userId) {
+        res.redirect('/petition');
+    }*/
     res.render("register", {
+        layout: "main"
+    });
+});
+
+// ---------------- PROFILE PAGE ----------------
+app.get("/profile", (req, res) => {
+    res.render("profile", {
         layout: "main"
     });
 });
@@ -95,6 +112,13 @@ app.get("/register", (req, res) => {
 // ---------------- LOGIN PAGE ----------------
 app.get("/login", (req, res) => {
     res.render("login", {
+        layout: "main"
+    });
+});
+
+// UPDATE PROFILE PAGE
+app.get("/edit", (req, res) => {
+    res.render("edit", {
         layout: "main"
     });
 });
@@ -118,6 +142,7 @@ app.get("/thanks", (req, res) => {
 app.get("/signers", (req, res) => {
     db.getSigners()
         .then(list => {
+            //console.log("list: ", list);
             res.render("signers", {
                 layout: "main",
                 signerslist: list.rows
@@ -129,19 +154,29 @@ app.get("/signers", (req, res) => {
 });
 
 // ---------------- SIGNERS PAGE FILTERED by city ----------------
-app.get("/signers/:city", (req, res) => {
+app.get("/signers/cities/:city", (req, res) => {
     console.log("req.params", req.params);
-    // will be added later
+    db.filterSignersByCity(req.params)
+        .then(results => {
+            res.render("signers", {
+                layout: "main",
+                signerslist: list.rows
+            });
+        })
+        .catch(err => {
+            console.log("Error in filterSignersByCity: ", err);
+        });
 });
 
 // ---------------- PETITION FORM REQUEST ----------------
 
 app.post("/petition", (req, res) => {
     if (req.body.signature != "") {
-        // no, the consition should be "if signature / signature.userId doesn't exists, ..."
-        db.addSignature(req.body.signature, req.session.userId)
+        //console.log("req.session: ", req.session);
+        // the consition should be "if signature / signature.userId doesn't exists, ..."
+        db.addSignature(req.body.signature, req.session.user.id)
             .then(results => {
-                console.log("results: ", results);
+                //console.log("results: ", results);
                 // cookie
                 req.session.id = results.rows[0].id;
                 req.session.firstname = results.rows[0].first;
@@ -149,7 +184,7 @@ app.post("/petition", (req, res) => {
                 res.redirect("/thanks");
             })
             .catch(err => {
-                res.render("petition", {
+                res.render("signatureform", {
                     error: "Something went wrong. Please try again",
                     layout: "main"
                 });
@@ -163,7 +198,7 @@ app.post("/petition", (req, res) => {
 app.post("/register", (req, res) => {
     // if an email already exists, don't register
     db.getUsers(req.body.email).then(data => {
-        console.log("data is: ", data); // если нет юзера в датабазе, то data.rows - пустой массив
+        //console.log("data is: ", data); // если нет юзера в датабазе, то data.rows - пустой массив
         if (data.rows.length != 0) {
             res.render("register", {
                 layout: "main",
@@ -179,7 +214,7 @@ app.post("/register", (req, res) => {
                     hash
                 )
                     .then(results => {
-                        console.log("results: ", results);
+                        //console.log("results: ", results);
                         // should we add to cookies all the info of the user???
                         req.session.user = {
                             id: results.rows[0].id,
@@ -189,7 +224,7 @@ app.post("/register", (req, res) => {
                             password: hash
                         };
                         console.log("req.session.user: ", req.session.user);
-                        res.redirect("/petition"); // or may be here shoud be a redirection to a login?
+                        res.redirect("/profile"); // or may be here shoud be a redirection to a login?
                     })
                     .catch(err => {
                         res.render("register", {
@@ -206,9 +241,29 @@ app.post("/register", (req, res) => {
     });
 });
 
+// ---------------- PROFILE FORM REQUEST ----------------
+app.post("/profile", (req, res) => {
+    console.log("req.body in profile: ", req.body);
+    console.log("req.session.user.id: ", req.session.user.id);
+    if (
+        !req.body.url.startsWith("http://") ||
+        !req.body.url.startsWith("https://") ||
+        !req.body.url.startsWith("//")
+    ) {
+        req.body.url = "http://" + req.body.url;
+    }
+    db.addProfileInfo(
+        req.body.age,
+        req.body.city,
+        req.body.url,
+        req.body.obscene,
+        req.session.user.id
+    );
+    res.redirect("/petition");
+});
+
 // ---------------- LOGIN FORM REQUEST ----------------
 app.post("/login", (req, res) => {
-    console.log("req.session", req.session);
     db.getUsers(req.body.email).then(data => {
         if (data.length != 0) {
             checkPassword(req.body.password, data.rows[0].password)
@@ -218,7 +273,7 @@ app.post("/login", (req, res) => {
                     req.session.email = data.rows[0].email;
                     //req.session.firstname = data.rows[0].first;
                     //req.session.lastname = data.rows[0].last;
-                    res.redirect("/petition");
+                    res.redirect("/profile");
                 })
                 .catch(() => {
                     res.render("login", {
@@ -234,6 +289,26 @@ app.post("/login", (req, res) => {
             });
         }
     });
+});
+
+// ---------------- LOGOUT FORM REQUEST ----------------
+app.get("/unsign", (req, res) => {
+    req.session = null;
+    //res.redirect("/login");
+    res.render("unsign", {
+        layout: "main"
+    });
+});
+
+// UPDATE PROFILE REQUEST
+app.post("/edit", (req, res) => {
+    db.updateProfile(
+        req.body.age,
+        req.body.city,
+        req.body.url,
+        req.body.obscene,
+        req.session.user.id
+    ).then();
 });
 
 app.listen(8080, () => console.log("PETITION"));

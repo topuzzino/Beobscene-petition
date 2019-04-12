@@ -18,12 +18,12 @@ exports.getUsers = function getUsers(email) {
 exports.addProfileInfo = function addProfileInfo(
     age,
     city,
-    homepage,
+    url,
     obscene,
     userId
 ) {
-    let q = `INSERT INTO user_profiles (age, city, homepage, obscene, userId) VALUES ($1, $2, $3, $4, $5) RETURNING *`;
-    let params = [age, city, homepage, obscene, userId];
+    let q = `INSERT INTO user_profiles (age, city, url, obscene, userId) VALUES ($1, $2, $3, $4, $5) RETURNING *`;
+    let params = [age, city, url, obscene, userId];
     return db.query(q, params);
 };
 
@@ -33,17 +33,26 @@ exports.getProfileInfo = function getProfileInfo(userId) {
     return db.query(q, [userId]);
 };
 
-// add signers in the database
-//exports.addSigners = function addSigners(firstname, lastname, signature) {
-//    let q = `INSERT INTO signatures (firstname, lastname, signature) VALUES ($1, $2, $3) RETURNING *`; // q stands for SQL query, $1 - for user prompt
-//    let params = [firstname, lastname, signature];
-//    return db.query(q, params);
-//};
+exports.updateProfile = function updateProfile(
+    age,
+    city,
+    url,
+    obscene,
+    userId
+) {
+    let q = `UPDATE user_profiles SET age = $1, city = $2, url = $3, obscene = $4 WHERE userId = $5 RETURNING id`;
+    let params = [age, city, url, obscene, userId];
+    return db.query(q, params);
+};
 
 // ON THANKS PAGE - show the list of signed users
-exports.getSigners = function getSigner() {
-    let q =
-        "SELECT users.first, users.last, signatures.userId FROM users JOIN signatures ON signatures.userId = users.id";
+exports.getSigners = function getSigners() {
+    let q = `SELECT users.first, users.last,
+        user_profiles.age, user_profiles.city, user_profiles.url, user_profiles.obscene,
+        signatures.userId
+        FROM signatures
+        LEFT JOIN users
+        ON signatures.userId = users.id LEFT JOIN user_profiles ON user_profiles.userId = users.id`;
     return db.query(q);
 };
 
@@ -58,4 +67,20 @@ exports.addSignature = function addSignature(signature, userId) {
 exports.getSignature = function getSignature(userId) {
     let q = "SELECT signature FROM signatures WHERE id = $1";
     return db.query(q, [userId]);
+};
+
+// ON THANKS page - filter signers by cities
+exports.filterSignersByCity = function filterSignersByCity(city) {
+    let q = `SELECT users.first, users.last,
+    user_profiles.age, user_profiles.city, user_profiles.url, user_profiles.obscene,
+     FROM user_profiles
+     JOIN users
+     ON user_profiles.userId = users.id
+     WHERE user_profiles.city = $1`;
+    return db.query(q);
+};
+
+exports.deleteSignature = function deleteSignature(id) {
+    let q = `DELETE * FROM signatures WHERE id = $1`;
+    return db.query(q, [id]);
 };

@@ -2,7 +2,7 @@
     <ul class="signers-list">
         {{#signerslist}}
         <li class="signers-list-item">
-            {{first}} {{last}}
+            <a href="{{url}}">{{first}} {{last}}</a>, {{age}}, from <a href="/signers/cities/{{city}}">{{city}}</a> said: "{{obscene}}"
         </li>
         {{/signerslist}}
     </ul>

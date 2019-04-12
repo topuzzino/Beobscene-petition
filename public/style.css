@@ -87,14 +87,16 @@ img {
 }
 
 .names-wrapper,
-.email-password-wrapper {
+.email-password-wrapper,
+.profileInfo-wrapper {
     display: flex;
     justify-content: space-between;
     margin-bottom: 40px;
 }
 
 .names-wrapper input,
-.email-password-wrapper input {
+.email-password-wrapper input,
+.profileInfo-wrapper input {
     width: 250px;
     height: 50px;
     margin: 0;
@@ -176,15 +178,55 @@ footer {
 
 /* ------------------ STYLES for THANKS ------------------ */
 .link-wrapper {
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
 }
 
 .signer-link {
+    width: 250px;
+    height: 50px;
+    padding-top: 7px;
+    background-color: #fff; /* change to a background-image */
     font-weight: 700;
     font-size: 24px;
     color: #000;
-    text-decoration-line: underline;
-    text-decoration-color: #00ff00;
+    text-decoration: none;
+    border: 3px solid #000;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: "Titillium Web", sans-serif;
+    text-transform: uppercase;
+}
+
+.unsign-link {
+    width: 250px;
+    height: 50px;
+    padding-top: 7px;
+    background-color: #00ff00;
+    color: #000;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: "Titillium Web", sans-serif;
+    text-transform: uppercase;
+}
+
+.logout-link {
+    display: block;
+    width: 250px;
+    height: 50px;
+    padding-top: 7px;
+    background-color: #000;
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: "Titillium Web", sans-serif;
+    text-transform: uppercase;
+    margin: 0 auto;
 }
 
 /* ------------------ STYLES for SIGNERS ------------------ */
