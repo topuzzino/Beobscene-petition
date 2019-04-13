@@ -60,7 +60,7 @@ app.use(function(req, res, next) {
 app.get("/petition", ifUnsigned, (req, res) => {
     console.log("req.session: ", req.session);
     db.getSigner(req.session.user.id).then(data => {
-        if (data.rows[0].length > 0) {
+        if (data.rows.length > 0) {
             req.session.signatureId = data.rows[0].id;
             res.redirect("/thanks");
         } else {
@@ -124,6 +124,13 @@ app.get("/thanks", ifSigned, (req, res) => {
             person: dataObj,
             layout: "main"
         });
+    });
+});
+
+app.post("/thanks", (req, res) => {
+    db.deleteSignature(req.session.signatureId).then(() => {
+        req.session.signatureId = null;
+        res.redirect("/petition");
     });
 });
 
@@ -308,22 +315,24 @@ app.get("/unsign", (req, res) => {
 
 // UPDATE PROFILE REQUEST
 app.post("/edit", (req, res) => {
+    console.log("req.body:", req.body);
     db.updateProfile(
-        req.body.first,
-        req.body.last,
+        req.body.firstname,
+        req.body.lastname,
         req.body.email,
         req.session.user.id
-    ).then(
-        db
-            .mergeProfileData(
-                req.body.age,
-                req.body.city,
-                req.body.url,
-                req.body.obscene,
-                req.session.user.id
-            )
-            .then(user => {})
-    );
+    ).then(() => {
+        db.mergeProfileData(
+            req.body.age,
+            req.body.city,
+            req.body.url,
+            req.body.obscene,
+            req.session.user.id
+        ).then(user => {
+            console.log("user: ", user);
+            res.redirect("/thanks");
+        });
+    });
 });
 
 //app.listen(8080, () => console.log("PETITION"));

@@ -48,7 +48,7 @@ exports.getProfileInfo = function getProfileInfo(userId) {
 };
 
 exports.updateProfile = function updateProfile(first, last, email, userId) {
-    let q = `UPDATE users SET first = $1, last = $2, email = $3 WHERE userId = $4`;
+    let q = `UPDATE users SET first = $1, last = $2, email = $3 WHERE id = $4`;
     let params = [first, last, email, userId];
     return db.query(q, params);
 };
@@ -63,7 +63,7 @@ exports.mergeProfileData = function mergeProfileData(
 ) {
     let q = `INSERT INTO user_profiles (age, city, url, obscene, userId)
     VALUES ($1, $2, $3, $4, $5) ON CONFLICT (userId)
-    DO UPDATE SET age = $1, city = $2, url=$3, obscene=$5, userId=$5`;
+    DO UPDATE SET age = $1, city = $2, url=$3, obscene=$4, userId=$5`;
     let params = [age, city, url, obscene, userId];
     return db.query(q, params);
 };
@@ -112,6 +112,6 @@ exports.filterSignersByCity = function filterSignersByCity(city) {
 };
 
 exports.deleteSignature = function deleteSignature(id) {
-    let q = `DELETE * FROM signatures WHERE id = $1`;
+    let q = `DELETE FROM signatures WHERE id = $1`;
     return db.query(q, [id]);
 };
