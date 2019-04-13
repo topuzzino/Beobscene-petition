@@ -198,6 +198,21 @@ footer {
     font-family: "Titillium Web", sans-serif;
     text-transform: uppercase;
 }
+.edit-link {
+    width: 250px;
+    height: 50px;
+    padding-top: 7px;
+    background-color: #fff; /* change to a background-image */
+    font-weight: 700;
+    font-size: 24px;
+    color: #000;
+    text-decoration: none;
+    border: 3px solid #000;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: "Titillium Web", sans-serif;
+    text-transform: uppercase;
+}
 
 .unsign-link {
     width: 250px;
@@ -237,4 +252,8 @@ footer {
 }
 
 .signers-list-item {
+}
+
+.error {
+    color: #ff007f;
 }

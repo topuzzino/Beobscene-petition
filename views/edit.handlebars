@@ -1,25 +1,27 @@
 <h2>Edit your profile</h2>
 <div class="form-wrapper">
     <form class="petition-form" method="post">
+        {{#signerslist}}
         <div class="names-wrapper">
             <input id="firstName" type="text" name="firstname" placeholder="First Name" value="{{first}}">
             <input id="lastName" type="text" name="lastname" placeholder="Last Name" value="{{last}}">
         </div>
         <input id="signature" type="hidden" name="signature" value="">
         <div class="email-password-wrapper">
-            <input type="email" name="email" placeholder="Email" value="">
+            <input type="email" name="email" placeholder="Email" value="{{email}}">
             <input type="password" name="password" placeholder="Password" value="">
         </div>
         <div class="profileInfo-wrapper">
-            <input type="text" name="age" placeholder="Age" value="">
-            <input type="text" name="city" placeholder="City" value="">
+            <input type="text" name="age" placeholder="Age" value="{{age}}">
+            <input type="text" name="city" placeholder="City" value="{{city}}">
         </div>
         <div class="profileInfo-wrapper">
-            <input type="text" name="url" placeholder="Homepage" value="">
-            <input type="text" name="obscene" placeholder="Your favorite obscene expression" value="">
+            <input type="text" name="url" placeholder="Homepage" value="{{url}}">
+            <input type="text" name="obscene" placeholder="Your favorite obscene expression" value="{{obscene}}">
         </div>
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
         <button type="submit" name="button">Update</button>
+        {{/signerslist}}
         {{> error }}
     </form>
 </div>

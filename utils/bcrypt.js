@@ -1,5 +1,10 @@
 var bcrypt = require("bcryptjs");
 
+module.exports = {
+    hashPassword,
+    checkPassword
+};
+
 function hashPassword(plainTextPassword) {
     return new Promise(function(resolve, reject) {
         bcrypt.genSalt(function(err, salt) {

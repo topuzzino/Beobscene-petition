@@ -1,8 +1,13 @@
 const express = require("express");
-const router = express.Router;
+const router = express.Router();
+const db = require("./utils/db");
+const bc = require("./utils/bcrypt");
+const {} = require("./middleware");
 
-router.get("/profile", (req, res) => {
-    res.sendStatus(200);
+router.get("/profile", ifLoggedOut, (req, res) => {
+    res.render("profile", {
+        layout: "main"
+    });
 });
 
 router.post("/profile", (req, res) => {

@@ -4,8 +4,14 @@
 
 <div class="link-wrapper">
     <a class="signer-link" href="/signers">See other signers</a>
-    <a class="unsign-link" href="/petition">Delete signature</a>
+    <a class="edit-link" href="/edit">Edit your profile</a>
 </div>
 
-<a class="logout-link" href="/unsign">Log out</a>
+<div class="link-wrapper">
+    <form class="unsign-link" action="/petition"  method="post">
+        <button type="button" name="button">Delete signature</button>
+    </form>
+    <a class="logout-link" href="/unsign">Log out</a>
+</div>
+
 {{/person}}
