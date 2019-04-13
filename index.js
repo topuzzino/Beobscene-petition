@@ -326,13 +326,12 @@ app.post("/edit", (req, res) => {
     );
 });
 
-app.listen(8080, () => console.log("PETITION"));
+//app.listen(8080, () => console.log("PETITION"));
 
-/* Port for Heroku
+// Port for Heroku
 app.listen(process.env.PORT || 8080, function() {
     console.log("I'm listening");
 }
-*/
 
 /* ---------------- REDIS DEMO ----------------
 redis.setex("country", 10, "germany").then(() => {

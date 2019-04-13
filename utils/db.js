@@ -1,5 +1,10 @@
 var spicedPg = require("spiced-pg");
-var db = spicedPg("postgres:postgres:postgres@localhost:5432/tabasco-petition");
+//var db = spicedPg("postgres:postgres:postgres@localhost:5432/tabasco-petition");
+
+var dbUrl =
+    process.env.DATABASE_URL ||
+    "postgres://postgres:postgres@localhost:5432/tabasco-petition";
+var db = spicedPg(dbUrl);
 
 // REGISTER A NEW USER
 exports.addUser = function addUser(firstname, lastname, email, password) {
