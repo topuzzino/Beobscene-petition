@@ -151,12 +151,13 @@ app.get("/signers", ifSigned, (req, res) => {
 
 // ---------------- SIGNERS PAGE FILTERED by city ----------------
 app.get("/signers/cities/:city", ifSigned, (req, res) => {
-    db.filterSignersByCity(req.body.city)
+    db.filterSignersByCity(req.params.city)
         .then(results => {
             console.log("results in signers: ", results);
             res.render("signers", {
                 layout: "main",
-                signerslist: results.rows
+                signerslist: results.rows,
+                city: req.params.city
             });
         })
         .catch(err => {

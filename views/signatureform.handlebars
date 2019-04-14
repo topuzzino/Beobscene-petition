@@ -1,11 +1,6 @@
-<p class="petition-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-    sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-    sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-    Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-
 <div class="form-wrapper">
     <form class="petition-form" method="post">
-        <p>So dear {{first}} {{last}}, let us know you're serious: <br/>give us your signature</p>
+        <p>So dear {{first}} {{last}}, let us know you're serious: <br/>sign our petition</p>
         <input id="signature" type="hidden" name="signature" value="">
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
         <canvas id="canvas" width="560" height="100">{{signature}}</canvas>
@@ -13,3 +8,4 @@
         {{> error }}
     </form>
 </div>
+{{> logout}}

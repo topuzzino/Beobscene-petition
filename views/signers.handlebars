@@ -2,8 +2,8 @@
     <ul class="signers-list">
         {{#signerslist}}
         <li class="signers-list-item">
-            <a href="{{url}}">{{first}} {{last}}</a>, {{#if age}} {{age}},{{/if}} {{#if city}}from <a href="/signers/cities/{{city}}">{{city}}</a>{{/if}} {{#if obscene}}said: "{{obscene}}"{{/if}}
+            <a class="signers-link" href="{{url}}">{{first}} {{last}}</a>, {{#if age}} {{age}},{{/if}} {{#if city}}from <a class="city-link" href="/signers/cities/{{city}}">{{city}}</a>{{/if}} {{#if obscene}}said: "{{obscene}}"{{/if}}
         </li>
         {{/signerslist}}
     </ul>
-    <a class="logout-link" href="/unsign">Log out</a>
+{{> logout}}
