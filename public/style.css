@@ -281,6 +281,7 @@ footer {
     text-align: left;
     padding: 0;
     margin: 0;
+    margin-bottom: 60px;
 }
 
 .signers-list-item {
