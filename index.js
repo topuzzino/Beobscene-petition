@@ -115,6 +115,7 @@ app.get("/edit", (req, res) => {
 // ---------------- THANKS PAGE ----------------
 app.get("/thanks", ifSigned, (req, res) => {
     db.getSignature(req.session.user.id).then(data => {
+        //console.log("data in get/thanks: ", data);
         dataObj = {
             firstname: req.session.firstname,
             lastname: req.session.firstname,
