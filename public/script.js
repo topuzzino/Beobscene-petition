@@ -74,3 +74,68 @@ function findxy(e) {
         }
     }
 }
+
+// touch Event for mobile signing - copied from the bencentra site
+canvas.addEventListener(
+    "touchstart",
+    function(e) {
+        var touch = e.touches[0];
+        var mouseEvent = new MouseEvent("mousedown", {
+            clientX: touch.clientX,
+            clientY: touch.clientY
+        });
+        canvas.dispatchEvent(mouseEvent);
+    },
+    false
+);
+
+canvas.addEventListener(
+    "touchend",
+    function(e) {
+        var mouseEvent = new MouseEvent("mouseup", {});
+        canvas.dispatchEvent(mouseEvent);
+    },
+    false
+);
+
+canvas.addEventListener(
+    "touchmove",
+    function(e) {
+        var touch = e.touches[0];
+        var mouseEvent = new MouseEvent("mousemove", {
+            clientX: touch.clientX,
+            clientY: touch.clientY
+        });
+        canvas.dispatchEvent(mouseEvent);
+    },
+    false
+);
+
+// Prevent scrolling when touching the canvas
+document.body.addEventListener(
+    "touchstart",
+    function(e) {
+        if (e.target == canvas) {
+            e.preventDefault();
+        }
+    },
+    false
+);
+document.body.addEventListener(
+    "touchend",
+    function(e) {
+        if (e.target == canvas) {
+            e.preventDefault();
+        }
+    },
+    false
+);
+document.body.addEventListener(
+    "touchmove",
+    function(e) {
+        if (e.target == canvas) {
+            e.preventDefault();
+        }
+    },
+    false
+);
