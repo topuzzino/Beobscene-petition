@@ -40,8 +40,8 @@ exports.removeProfile = function removeProfile(userId) {
 
 //
 exports.getProfileInfo = function getProfileInfo(userId) {
-    let q = `SELECT * FROM user_profiles
-    LEFT JOIN users
+    let q = `SELECT * FROM users
+    LEFT JOIN user_profiles
     ON user_profiles.userid = users.id
     WHERE userid = $1`;
     return db.query(q, [userId]);
