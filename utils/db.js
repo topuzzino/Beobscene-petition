@@ -1,10 +1,8 @@
 var spicedPg = require("spiced-pg");
-//var db = spicedPg("postgres:postgres:postgres@localhost:5432/tabasco-petition");
-
-var dbUrl =
+var db = spicedPg(
     process.env.DATABASE_URL ||
-    "postgres://postgres:postgres@localhost:5432/tabasco-petition";
-var db = spicedPg(dbUrl);
+        "postgres://postgres:postgres@localhost:5432/tabasco-petition"
+);
 
 // REGISTER A NEW USER
 exports.addUser = function addUser(firstname, lastname, email, password) {
@@ -42,7 +40,7 @@ exports.removeProfile = function removeProfile(userId) {
 exports.getProfileInfo = function getProfileInfo(userId) {
     let q = `SELECT users.id, users.first, users.last, users.email, age, city, url, obscene
     FROM users
-    LEFT JOIN user_profiles 
+    LEFT JOIN user_profiles
     ON user_profiles.userid = users.id
     WHERE users.id = $1`;
     return db.query(q, [userId]);
